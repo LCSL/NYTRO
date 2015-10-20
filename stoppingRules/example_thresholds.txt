@@ -1,0 +1,81 @@
+breastCancer(400,169,'zeroOne')
+=============================
+
+m = 100
+sigma = 0.9
+winSize = 10;
+thres = 0.005;
+
+
+ds = pumadyn(4096,4096, 32 , 'n' , 'h');
+=============================
+
+m = 100
+sigma = 2.66;
+winSize = 10;
+thres = 0.001;
+
+
+Adult (full , +-1)
+==================
+
+m = 1000
+sigma = 6.6
+winSize = 10;
+thres = 0.0069;
+valErrES = 0.686406308302251
+testErrES = 0.687425891622647
+stoppingRule = @windowLinearFitting
+
+
+CovertypeBinary
+===============
+
+m = 10000
+sigma = 1
+winSize = 10;
+thres = 0.013;
+valErrES = 0.829320153176031
+testErrES = 0.917689275555217
+tStarES = 39
+stoppingRule = @windowLinearFitting
+
+
+ijcnn
+=====
+
+m = 5000
+sigma = 1
+winSize = 10;
+thres = 0.000835;
+valErrES = 0.460995750629126
+testErrES = 0.477176286265992
+tStarES = 329
+stoppingRule = @windowLinearFitting
+
+
+InsuranceCompanyBenchmark
+=========================
+
+m = 2000
+sigma = 3
+winSize = 10;
+thres = 0.000051;
+valErrES = 0.503216115284153
+testErrES = 0.465283639108528
+tStarES = 493
+stoppingRule = @windowLinearFitting
+
+
+YearPredictionMSD
+=========================
+
+m = 10000
+sigma = 1
+winSize = 10;
+thres = 0.000113;
+valErrES = 0.115784150048320
+testErrES = 0.114872353548207
+tStarES = 481
+stoppingRule = @windowLinearFitting
+
