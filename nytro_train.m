@@ -105,16 +105,16 @@ function [ output ] = nytro_train( X , Y , varargin )
         output.best.t = Inf;
 
         % Error buffers
-        if config.crossValidation.storeValidationError == 1
-            output.errorPath.validation = zeros(1,config.filter.maxIterations) * NaN;
-        else
-            output.errorPath.training = [];
-        end
+        output.errorPath.validation = zeros(1,config.filter.maxIterations) * NaN;
         if config.crossValidation.storeTrainingError == 1
             output.errorPath.training = zeros(1,config.filter.maxIterations) * NaN;
         else
             output.errorPath.training = [];
         end
+
+        % Init time structures
+        output.time.crossValidationTrain = 0;
+        output.time.crossValidationEval = 0;
 
         % Subdivide training set in training1 and validation
 
@@ -146,7 +146,7 @@ function [ output ] = nytro_train( X , Y , varargin )
 
         % Compute kernel
         tic
-        Knm = kernelFunction(Xtr, Xtr1(nysIdx,:), config.kernel.kernelParameters);
+        Knm = config.kernel.kernelFunction(X, Xtr1(nysIdx,:), config.kernel.kernelParameters);
         Kmm = Knm(trainIdx(nysIdx),:);
         R = chol( ( Kmm + Kmm') / 2 + 1e-10 * eye(config.kernel.m));  % Compute upper Cholesky factor of Kmm
         output.time.kernelComputation = toc;
@@ -206,7 +206,7 @@ function [ output ] = nytro_train( X , Y , varargin )
                 stop  = config.crossValidation.stoppingRule(...
                             output.errorPath.validation(1:iter) , ...
                             config.crossValidation.windowSize , ...
-                            config.crossValidation.thres);
+                            config.crossValidation.threshold);
 
                 if stop == 1
                     break
@@ -216,7 +216,7 @@ function [ output ] = nytro_train( X , Y , varargin )
             output.time.crossValidationTotal = output.time.crossValidationEval + output.time.crossValidationTrain;
         end    
 
-        if config.crossValidation.retraining == 1
+        if config.crossValidation.recompute == 1
 
             %%% Retrain on whole dataset
 
@@ -253,7 +253,7 @@ function [ output ] = nytro_train( X , Y , varargin )
 
         % Compute kernels
         tic
-        Knm = kernelFunction(X, X(nysIdx,:), config.kernel.kernelParameters);
+        Knm = config.kernel.kernelFunction(X, X(nysIdx,:), config.kernel.kernelParameters);
         Kmm = Knm(nysIdx,:);
         R = chol( ( Kmm + Kmm') / 2 + 1e-10 * eye(config.kernel.m));  % Compute upper Cholesky factor of Kmm    
         output.time.kernelComputation = toc;

@@ -11,7 +11,7 @@ function [ output ] = nytro_test( Xtr , Xte , Yte , training_output)
 
     % Perform prediction
     tic
-    output.YtePred = KnmTe * training_output.config.best.alpha;
+    output.YtePred = KnmTe * training_output.best.alpha;
     if ~isempty(training_output.config.crossValidation.codingFunction)
         output.YtePred = codingFunction(output.YtePred);
     end
