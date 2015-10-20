@@ -10,7 +10,8 @@ function [ output ] = nytro_train( X , Y , varargin )
     %
     %   Y : Output signals
     %
-    %   config.
+    %   config.  \\ optional configuration structure. See config_set.m for
+    %            \\ default values
     %
     %          data.
     %               shuffle : 1/0 flag - Shuffle the training indexes
@@ -67,8 +68,9 @@ function [ output ] = nytro_train( X , Y , varargin )
     %
     %          time.
     %               kernelComputation
-    %               crossValidation_train
-    %               crossValidation_total
+    %               crossValidationTrain
+    %               crossValidationEval
+    %               crossValidationTotal
     %
     %          errorPath.
     %                    training
@@ -139,10 +141,13 @@ function [ output ] = nytro_train( X , Y , varargin )
         % Subsample training examples for Nystrom approximation
         nysIdx = randperm(ntr1 , config.kernel.m);
 
+        % Compute kernel
+        tic
         Knm = kernelFunction(Xtr, Xtr1(nysIdx,:), config.kernel.kernelParameters);
         Kmm = Knm(trainIdx(nysIdx),:);
-
         R = chol( ( Kmm + Kmm') / 2 + 1e-10 * eye(config.kernel.m));  % Compute upper Cholesky factor of Kmm
+        output.time.kernelComputation = toc;
+
         alpha = zeros(config.kernel.m,t);
         beta = zeros(config.kernel.m,t);
         if isempty(config.filter.gamma)
@@ -157,11 +162,14 @@ function [ output ] = nytro_train( X , Y , varargin )
         for iter = 1:config.filter.maxIterations
 
             % Update filter
+            tic
             tmp0 = Knm * alpha - Y;
             tmp0 = tmp0 .* indZ;
             beta = beta -  gamma * ( R' \ ( Knm' * tmp0 ) );
+            output.time.crossValidationTrain = output.time.crossValidationTrain + toc;
 
             % Evaluate validation error
+            tic
             alpha = R\beta; % Compute alpha
 
             YtrainValPred = Knm * alpha;
@@ -171,6 +179,7 @@ function [ output ] = nytro_train( X , Y , varargin )
                 YvalPred = YtrainValPred(valIdx,:);
             end
             output.errorPath.validation(iter) = config.crossValidation.errorFunction(Y(valIdx,:) , YvalPred);
+            output.time.crossValidationEval = output.time.crossValidationEval + toc;
 
             if output.errorPath.validation(iter) < output.best.validationError
                 output.best.validationError = output.errorPath.validation(iter);
@@ -200,12 +209,15 @@ function [ output ] = nytro_train( X , Y , varargin )
                     break
                 end
             end
+
+            output.time.crossValidationTotal = output.time.crossValidationEval + output.time.crossValidationTrain;
         end    
 
         if config.crossValidation.retraining == 1
 
             %%% Retrain on whole dataset
 
+            tic
             beta = zeros(config.kernel.m,t);
             if isempty(config.filter.gamma)
                 gamma = 1/(norm(Knm/R))^2;
@@ -220,6 +232,8 @@ function [ output ] = nytro_train( X , Y , varargin )
             end
 
             output.best.alpha = R\beta; % Get alpha from beta
+
+            output.time.fullTraining = toc;
         end
 
 
@@ -227,16 +241,20 @@ function [ output ] = nytro_train( X , Y , varargin )
 
         %%% Just train
 
+        
         % Initialize Train kernel
 
         % Subsample training examples for Nystrom approximation
         nysIdx = randperm(ntr , config.kernel.m);
 
         % Compute kernels
+        tic
         Knm = kernelFunction(X, X(nysIdx,:), config.kernel.kernelParameters);
         Kmm = Knm(nysIdx,:);
-
         R = chol( ( Kmm + Kmm') / 2 + 1e-10 * eye(config.kernel.m));  % Compute upper Cholesky factor of Kmm    
+        output.time.kernelComputation = toc;
+
+        tic
         beta = zeros(config.kernel.m,t);
         if isempty(config.filter.gamma)
             gamma = 1/(norm(Knm/R))^2;
@@ -251,5 +269,7 @@ function [ output ] = nytro_train( X , Y , varargin )
         end
 
         output.best.alpha = R\beta; % Get alpha from beta
+
+        output.time.fullTraining = toc;
     end
 end
