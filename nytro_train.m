@@ -66,6 +66,8 @@ function [ output ] = nytro_train( X , Y , varargin )
     %               iteration
     %               alpha
     %
+    %          nysIdx : Vector - selected Nystrom approximation indexes
+    %
     %          time.
     %               kernelComputation
     %               crossValidationTrain
@@ -140,6 +142,7 @@ function [ output ] = nytro_train( X , Y , varargin )
 
         % Subsample training examples for Nystrom approximation
         nysIdx = randperm(ntr1 , config.kernel.m);
+        output.nysIdx = trainIdx(nysIdx);
 
         % Compute kernel
         tic
@@ -246,6 +249,7 @@ function [ output ] = nytro_train( X , Y , varargin )
 
         % Subsample training examples for Nystrom approximation
         nysIdx = randperm(ntr , config.kernel.m);
+        output.nysIdx = nysIdx;
 
         % Compute kernels
         tic
@@ -272,4 +276,6 @@ function [ output ] = nytro_train( X , Y , varargin )
 
         output.time.fullTraining = toc;
     end
+
+    output.config = config;
 end
