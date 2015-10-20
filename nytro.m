@@ -65,12 +65,17 @@ function [ output ] = nytro_train( X , Y , config )
 %               iteration
 %               alpha
 %
+%          time.
+%               kernelComputation
+%               crossValidation_train
+%               crossValidation_total
+%
 %          errorPath.
 %                    training
 %                    validation
 
-ntr = size(config.data.Y,1);
-t = size(config.data.Y,2);  % number of output signals
+ntr = size(Y,1);
+t = size(Y,2);  % number of output signals
 
 % Best parameters variables init
 output.best = struct();
@@ -117,10 +122,10 @@ elseif isempty(config.filter.fixedIterations) && ~isempty(config.filter.maxItera
         
     end
     
-    Xtr1 = config.data.X(trainIdx,:);
-%     Ytr1 = config.data.Y(trainIdx,:);
-%     Xval = config.data.X(valIdx,:);
-%     Yval = config.data.Y(valIdx,:);
+    Xtr1 = X(trainIdx,:);
+%     Ytr1 = Y(trainIdx,:);
+%     Xval = X(valIdx,:);
+%     Yval = Y(valIdx,:);
     
     % Initialize Train kernel
 
@@ -143,7 +148,7 @@ elseif isempty(config.filter.fixedIterations) && ~isempty(config.filter.maxItera
     for iter = 1:config.filter.maxIterations
         
         % Update filter
-        tmp0 = Knm * alpha - config.data.Y;
+        tmp0 = Knm * alpha - Y;
         tmp0 = tmp0 .* indZ;
         beta = beta -  gamma * ( R' \ ( Knm' * tmp0 ) );
 
@@ -156,7 +161,7 @@ elseif isempty(config.filter.fixedIterations) && ~isempty(config.filter.maxItera
         else
             YvalPred = YtrainValPred(valIdx,:);
         end
-        output.errorPath.validation(iter) = config.crossValidation.errorFunction(config.data.Y(valIdx,:) , YvalPred);
+        output.errorPath.validation(iter) = config.crossValidation.errorFunction(Y(valIdx,:) , YvalPred);
         
         if output.errorPath.validation(iter) < output.best.validationError
             output.best.validationError = output.errorPath.validation(iter);
@@ -171,24 +176,22 @@ elseif isempty(config.filter.fixedIterations) && ~isempty(config.filter.maxItera
             else
                 YtrainPred = YtrainValPred(trainIdx,:);
             end
-            output.errorPath.training(iter) = config.crossValidation.errorFunction(config.data.Y(trainIdx,:) , YtrainPred);    
+            output.errorPath.training(iter) = config.crossValidation.errorFunction(Y(trainIdx,:) , YtrainPred);    
         end
         
         % Apply Stopping Rule
         if ~isempty(config.crossValidation.stoppingRule)
             
-            
-            
-            
+            stop  = config.crossValidation.stoppingRule(...
+                        output.errorPath.validation(1:iter) , ...
+                        config.crossValidation.windowSize , ...
+                        config.crossValidation.thres);
+    
+            if stop == 1
+                break
+            end
         end
     end    
-    
-    
-    
-    
-    
-    
-    
     
     if config.crossValidation.retraining == 1
         

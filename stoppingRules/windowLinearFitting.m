@@ -1,22 +1,18 @@
-function tStar = windowLinearFitting(err , winSize , thres)
-%WINDOW Stop if error decreases less than a threshold 'thres' in a window
+function stop = windowLinearFitting(err , winSize , thres)
+%WINDOWLINEARFITTING Stop if error decreases less than a threshold 'thres' in a window
 % of size winSize
 %   Detailed explanation goes here
     
-    t = winSize;
-    tStar = numel(err);
+    stop = 0;
     
-    while t < numel(err)
+    if numel(err) >= winSize
         
-        currErr = err(t-winSize+1 : t);
+        currErr = err(end-winSize + 1 : end);
         X = [ones(winSize,1), (1:winSize)'];
         b = X\currErr';
         if b(2) >= -(thres/winSize)
-            tStar = t;
-            break
+            stop = 1;
         end
-        
-        t = t + 1;
     end
 end
 
