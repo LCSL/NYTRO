@@ -75,22 +75,30 @@ Output structures
 *nytro_train*
 ----
 
-         best.
-              validationError
-              iteration
-              alpha
+* best.
+    * validationError : Best validation error found in cross validation
+    * iteration : Best filter iteration
+    * alpha : Best coefficients vector
 
-         nysIdx : Vector - selected Nystrom approximation indexes
+* nysIdx : Vector - selected Nystrom training samples indexes
 
-         time.
-              kernelComputation
-              crossValidationTrain
-              crossValidationEval
-              crossValidationTotal
+* time.
+    * kernelComputation : Time for kernel computation
+    * crossValidationTrain : Time for filter iterations during cross validation
+    * crossValidationEval : Time for validation error evaluation during cross validation
+    * crossValidationTotal : Cumulative cross validation time
+    * fullTraining : Training time in the just-train case (no cross validation)
 
-         errorPath.
-                   training
-                   validation
-```
+* errorPath.
+    * training : Training error path for each of the computed iterations
+    * validation : Validation error path for each of the computed iterations
 
 *nytro_test*
+----
+
+* YtePred : Predicted output
+* testError : Test error
+* time.
+    * kernelComputation : Kernel computation time
+    * prediction : Prediction computation time
+    * errorComputation : Error computation time
