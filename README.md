@@ -7,7 +7,7 @@
 -------------------------------------
 
 
-Copyright (C) 2015, [Laboratory for Computational and Statistical Learning](https://lcsl.mit.edu) (IIT@MIT)\
+Copyright (C) 2015, [Laboratory for Computational and Statistical Learning](http://lcsl.mit.edu/#/home) (IIT@MIT)\
 All rights reserved.\
 Please see attached license file.
 
