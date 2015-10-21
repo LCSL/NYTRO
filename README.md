@@ -6,9 +6,11 @@
 
 -------------------------------------
 
-
 Copyright (C) 2015, [Laboratory for Computational and Statistical Learning](http://lcsl.mit.edu/#/home) (IIT@MIT).
 All rights reserved.
+
+*By Raffaello Camoriano, Alessandro Rudi and Lorenzo Rosasco*
+
 Please see attached license file.
 
 Introduction
