@@ -1,5 +1,5 @@
 function [ error ] = classificationError( Y , Ypred )
-%ACCURACY Summary of this function goes here
+%classificationError Summary of this function goes here
 %   Detailed explanation goes here
 
     t = size(Y,2);

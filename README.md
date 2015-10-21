@@ -1,6 +1,6 @@
 
 -------------------------------------
-\>\>\> The NYTRO Matlab Package  \>\>\> 
+The NYTRO Matlab Package
 ========================
 ***NYstrom iTerative RegularizatiOn***
 
@@ -24,6 +24,78 @@ Early stopping is a well known approach to reduce the time complexity for perfor
 
 This software package provides a simple and extendible interface to NYTRO. It has been tested on MATLAB r2014b. Examples are available  in the "examples" folder.
 
+Examples
+====
+
+Automatic training with default options
+----
+
+```matlab
+
+load breastcancer
+
+% Perform default cross validation
+[ training_output ] = nytro_train( Xtr , Ytr );
+
+% Perform predictions on the test set and evaluate results
+[ prediction_output ] = nytro_test( Xtr , Xte , Yte , training_output);
+```
+
+Specifying a custom kernel parameter
+----
+```matlab
+
+load breastcancer
+
+% Customize configuration
+config = config_set('kernel.kernelParameters' , 0.9 , ...           % Change gaussian kernel parameter (sigma)
+                    'kernel.kernelFunction' , @gaussianKernel);     % Change kernel function
+
+% Perform default cross validation
+[ training_output ] = nytro_train( Xtr , Ytr , config);
+
+% Perform predictions on the test set and evaluate results
+[ prediction_output ] = nytro_test( Xtr , Xte , Yte , training_output);
+```
+
+Specifying the subsampling level *m*
+----
+```matlab
+
+load breastcancer
+
+% Customize configuration
+config = config_set('kernel.m' , 200);     % Change kernel function
+
+% Perform default cross validation
+[ training_output ] = nytro_train( Xtr , Ytr , config);
+
+% Perform predictions on the test set and evaluate results
+[ prediction_output ] = nytro_test( Xtr , Xte , Yte , training_output);
+```
+
+Some more customizations
+```matlab
+
+load breastcancer
+
+% Customize configuration
+config = config_set('crossValidation.threshold' , -0.002 , ...      % Change stopping rule threshold
+                    'crossValidation.recompute' , 1 , ...           % Recompute the solution after cross validation
+                    'crossValidation.codingFunction' , @zeroOneBin , ...   % Change coding function
+                    'crossValidation.errorFunction' , @classificationError , ...   % Change error function
+                    'crossValidation.stoppingRule' , @windowSimple , ...   % Change stopping rule function
+                    'kernel.m' , 200 , ...                          % Modify the subsampling level (default m = 100)
+                    'kernel.kernelParameters' , 0.9 , ...           % Change gaussian kernel parameter (sigma)
+                    'kernel.kernelFunction' , @gaussianKernel);     % Change kernel function
+
+% Perform default cross validation
+[ training_output ] = nytro_train( Xtr , Ytr , config);
+
+% Perform predictions on the test set and evaluate results
+[ prediction_output ] = nytro_test( Xtr , Xte , Yte , training_output);
+```
+For a complete list of customizable configuration options, see the next section.
 
 
 Configuration Parameters
@@ -53,8 +125,22 @@ config = config_set('crossValidation.threshold' , -0.002 , ...      % Change sto
     * crossValidation.validationPart = 0.2
     * crossValidation.recompute = 0
     * crossValidation.errorFunction = @rmse
+        * Provided functions (*errorFunctions* folder):
+            *@rmse: root mean squared error
+            *@classificationError : Relative classification error (error rate)
+        * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * crossValidation.codingFunction = [ ]
+        * Provided functions (*codingFunctions* folder):
+            *@plusMinusOneBin: Class 1: +1, class 2: -1
+            *@zeroOneBin : Class 1: +1, class 2: 0
+        * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * crossValidation.stoppingRule = @windowLinearFitting
+        * Provided functions (*stoppingRules* folder):
+            *@windowSimple: Stops if the ratio e1/e0 >= (1-threshold). e1 is the error of the most recent iteration. e0 is the error of the oldest iteration in the window
+            *@windowAveraged : Works like @windowSimple, but taking e1 and e0 as the mean over the oldest and newest 10% of the points contained in the window (to increase stability).
+            *@windowMedian : Works like @windowAveraged, but computes the median rather than the mean.
+            *@windowLinearFitting : Works like @windowSimple, but uses a linear fitting of all the points in the window to obtain a more stable estimate of e0 and e1.
+        * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * crossValidation.windowSize = 10
     * crossValidation.threshold = 0
 
@@ -65,10 +151,11 @@ config = config_set('crossValidation.threshold' , -0.002 , ...      % Change sto
 
 * **Kernel**
     * kernel.kernelFunction  = @gaussianKernel
+        * Provided functions:
+            *@gaussianKernel : Gaussian kernel function. In this case, the kernel parameter is the bandwidth sigma.
+        * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * kernel.kernelParameters = 1
     * kernel.m = 100
-    
-    
     
     
 Output structures
