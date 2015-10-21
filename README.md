@@ -11,6 +11,8 @@ All rights reserved.
 
 *By Raffaello Camoriano, Alessandro Rudi and Lorenzo Rosasco*
 
+*Contact: raffaello.camoriano@iit.it*
+
 Please see attached license file.
 
 Introduction
@@ -22,7 +24,7 @@ This Matlab package provides an implementation of the NYTRO algorithm presented 
 
 Early stopping is a well known approach to reduce the time complexity for performing training and model selection of large scale learning machines. On the other hand, memory/space (rather than time) complexity is the main constraint in many applications, and randomized subsampling techniques have been proposed to tackle this issue. In NYTRO, we combine early stopping and subsampling ideas, proposing a form of randomized iterative regularization based on early stopping and subsampling. In this way, we overcome the memory bottle neck of exact Early Stopping algorithms such as the kernelized Landweber iteration. Moreover, NYTRO can also be faster than other subsampled algorithms, such as Nystrom Kernel Regularized Least Squares (NKRLS), especially when a stopping rule is used.
 
-This software package provides a simple and extendible interface to NYTRO. It has been tested on MATLAB r2014b. Examples are available  in the "examples" folder.
+This software package provides a simple and extendible interface to NYTRO. It has been tested on MATLAB r2014b, but should work on newer and older versions too. If it does not, please contact us and/or open an issue. Examples are available  in the "examples" folder.
 
 Examples
 ====
