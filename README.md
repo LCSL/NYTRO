@@ -1,3 +1,4 @@
+```
                 -------------------------------------
                 |     The NYTRO Matlab Package      |
                 |  NYstrom iTerative RegularizatiOn |
@@ -8,6 +9,7 @@ All rights reserved.
 
 Please see attached license file.
 
+```
 
 NYTRO NYstrom iTerative RegularizatiOn - Early Stopping cross validation
   Performs selection of the Early Stopping regularization parameter
