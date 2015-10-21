@@ -22,11 +22,12 @@ Early stopping is a well known approach to reduce the time complexity for perfor
 
 This software package provides a simple and extendible interface to NYTRO. It has been tested on MATLAB r2014b. Examples are available  in the "examples" folder.
 
-All the configurable parameters of the algorithm can be set be means of the provided *config_set* function, which returns a custom configuration structure that can be passed to the *nytro_train* function. If no configuration structure is passed, *nytro_train* uses the default configuration parameters listed below. *nytro_train* performs the training by running the NYTRO algorithm. It returns a structure with the trained model, which can then be passed to *nytro_test* for performing predictions and test error assessment.
 
 
 Configuration Parameters
 ====
+All the configurable parameters of the algorithm can be set be means of the provided *config_set* function, which returns a custom configuration structure that can be passed to the *nytro_train* function. If no configuration structure is passed, *nytro_train* uses the default configuration parameters listed below. *nytro_train* performs the training by running the NYTRO algorithm. It returns a structure with the trained model, which can then be passed to *nytro_test* for performing predictions and test error assessment.
+
 This is an example of how the configuration parameters can be customized by means of the *config_set* function. See the code in "examples/customCrosValidation" for more details.
 
 ```matlab
