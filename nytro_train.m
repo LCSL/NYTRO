@@ -92,8 +92,7 @@ function [ output ] = nytro_train( X , Y , varargin )
     output.best = struct();
     output.best.alpha = zeros(config.kernel.m,t);
 
-    if (isempty(config.filter.fixedIterations) && isempty(config.filter.maxIterations)) || ...
-       (~isempty(config.filter.fixedIterations) && ~isempty(config.filter.maxIterations))
+    if isempty(config.filter.fixedIterations) && isempty(config.filter.maxIterations)
 
         error('Specify either a fixed or a maximum number of iterations')
 
@@ -240,10 +239,9 @@ function [ output ] = nytro_train( X , Y , varargin )
         end
 
 
-    elseif ~isempty(config.filter.fixedIterations) && isempty(config.filter.maxIterations) 
+    elseif ~isempty(config.filter.fixedIterations)
 
         %%% Just train
-
         
         % Initialize Train kernel
 
@@ -266,8 +264,8 @@ function [ output ] = nytro_train( X , Y , varargin )
             gamma = config.filter.gamma;
         end
 
-        % Compute solution
-        for iter = 1:output.best.iteration
+        % Compute solution with a fixed number of steps
+        for iter = 1:config.filter.fixedIterations
             % Update filter
             beta = beta -  gamma * (R' \ ( Knm' * ( Knm * (R \ beta) - Y ) ) );
         end
