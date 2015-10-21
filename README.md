@@ -127,20 +127,20 @@ config = config_set('crossValidation.threshold' , -0.002 , ...      % Change sto
     * crossValidation.recompute = 0
     * crossValidation.errorFunction = @rmse
         * Provided functions (*errorFunctions* folder):
-            *@rmse: root mean squared error
-            *@classificationError : Relative classification error (error rate)
+            * @rmse: root mean squared error
+            * @classificationError : Relative classification error (error rate)
         * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * crossValidation.codingFunction = [ ]
         * Provided functions (*codingFunctions* folder):
-            *@plusMinusOneBin: Class 1: +1, class 2: -1
-            *@zeroOneBin : Class 1: +1, class 2: 0
+            * @plusMinusOneBin: Class 1: +1, class 2: -1
+            * @zeroOneBin : Class 1: +1, class 2: 0
         * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * crossValidation.stoppingRule = @windowLinearFitting
         * Provided functions (*stoppingRules* folder):
-            *@windowSimple: Stops if the ratio e1/e0 >= (1-threshold). e1 is the error of the most recent iteration. e0 is the error of the oldest iteration in the window
-            *@windowAveraged : Works like @windowSimple, but taking e1 and e0 as the mean over the oldest and newest 10% of the points contained in the window (to increase stability).
-            *@windowMedian : Works like @windowAveraged, but computes the median rather than the mean.
-            *@windowLinearFitting : Works like @windowSimple, but uses a linear fitting of all the points in the window to obtain a more stable estimate of e0 and e1.
+            * @windowSimple: Stops if the ratio e1/e0 >= (1-threshold). e1 is the error of the most recent iteration. e0 is the error of the oldest iteration in the window
+            * @windowAveraged : Works like @windowSimple, but taking e1 and e0 as the mean over the oldest and newest 10% of the points contained in the window (to increase stability).
+            * @windowMedian : Works like @windowAveraged, but computes the median rather than the mean.
+            * @windowLinearFitting : Works like @windowSimple, but uses a linear fitting of all the points in the window to obtain a more stable estimate of e0 and e1.
         * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * crossValidation.windowSize = 10
     * crossValidation.threshold = 0
@@ -153,7 +153,7 @@ config = config_set('crossValidation.threshold' , -0.002 , ...      % Change sto
 * **Kernel**
     * kernel.kernelFunction  = @gaussianKernel
         * Provided functions:
-            *@gaussianKernel : Gaussian kernel function. In this case, the kernel parameter is the bandwidth sigma.
+            * @gaussianKernel : Gaussian kernel function. In this case, the kernel parameter is the bandwidth sigma.
         * Custom functions can be implemented by the user, simply following the input-output structure of any of the provided functions.
     * kernel.kernelParameters = 1
     * kernel.m = 100
