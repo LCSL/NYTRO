@@ -75,6 +75,7 @@ config = config_set('kernel.m' , 200);     % Change kernel function
 ```
 
 Some more customizations
+----
 ```matlab
 
 load breastcancer
@@ -95,7 +96,7 @@ config = config_set('crossValidation.threshold' , -0.002 , ...      % Change sto
 % Perform predictions on the test set and evaluate results
 [ prediction_output ] = nytro_test( Xtr , Xte , Yte , training_output);
 ```
-For a complete list of customizable configuration options, see the next section.
+**For a complete list of customizable configuration options, see the next section.**
 
 
 Configuration Parameters
