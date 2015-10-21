@@ -13,7 +13,7 @@ All rights reserved.
 
 *Contact: raffaello.camoriano@iit.it*
 
-Please see attached license file.
+Please check the attached license file.
 
 Introduction
 ============
