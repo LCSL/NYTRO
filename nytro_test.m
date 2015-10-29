@@ -13,7 +13,7 @@ function [ output ] = nytro_test( Xtr , Xte , Yte , training_output)
     tic
     output.YtePred = KnmTe * training_output.best.alpha;
     if ~isempty(training_output.config.crossValidation.codingFunction)
-        output.YtePred = codingFunction(output.YtePred);
+        output.YtePred = training_output.config.crossValidation.codingFunction(output.YtePred);
     end
     output.time.prediction = toc;
 
