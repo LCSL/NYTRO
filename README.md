@@ -20,7 +20,8 @@ Introduction
 
 This Matlab package provides an implementation of the NYTRO algorithm presented in the following work:
 
-> *Tomas Angles^, Raffaello Camoriano^, Alessandro Rudi, Lorenzo Rosasco*, ***NYTRO: When Subsampling Meets Early Stopping***, 19 Oct 2015, http://arxiv.org/abs/1510.05684
+> Camoriano, R.^, Angles, T.^, Rudi, A. and Rosasco, L., 2016, May. Nytro: When subsampling meets early stopping. In Artificial Intelligence and Statistics
+> http://proceedings.mlr.press/v51/camoriano16.html
 > 
 > ^: Equal contribution
 
